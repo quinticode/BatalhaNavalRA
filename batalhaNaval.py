@@ -1,7 +1,7 @@
 # humano x compuador
-# Cada jogador deve ter um tabuleiro (matriz) de tamanho 5x10 ou 10x10 que irá conter as informações
+# Cada jogador deve ter um tabuleiro (matriz) de tamanho 5x100 ou 100x100 que irá conter as informações
 # das coordenadas de cada embarcação, também deverá ter outro tabuleiro (matriz vazia) de tamanho
-# 5x10 ou 10x10 (um para o computador e outro para o jogador) que será exibido como feedback
+# 5x100 ou 100x100 (um para o computador e outro para o jogador) que será exibido como feedback
 # (impresso no console), esse segundo tabuleiro não deve possuir as informações de coordenadas
 # (preencha a matriz com zeros ou qualquer outro caractere que achar adequado). As embarcações devem
 # ocupar um único espaço da matriz. No mínimo 5 embarcações devem ser posicionadas.
@@ -27,29 +27,40 @@
 
 import random
 
-def criar_10x10():
+def criar_11x11(): # <-- isso aqui é gambiarra pra fazer o 100x100 com feedback pro usuario
 
     return [
-    [0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0]
+    ['XX','01','02','03','04','05','06','07','08','09','10'],
+    ['01','00','00','00','00','00','00','00','00','00','00'],
+    ['02','00','00','00','00','00','00','00','00','00','00'],
+    ['03','00','00','00','00','00','00','00','00','00','00'],
+    ['04','00','00','00','00','00','00','00','00','00','00'],
+    ['05','00','00','00','00','00','00','00','00','00','00'],
+    ['06','00','00','00','00','00','00','00','00','00','00'],
+    ['07','00','00','00','00','00','00','00','00','00','00'],
+    ['08','00','00','00','00','00','00','00','00','00','00'],
+    ['09','00','00','00','00','00','00','00','00','00','00'],
+    ['10','00','00','00','00','00','00','00','00','00','00'],
     ]
+    
+def print_matriz(matriz):
 
-matrizJogadorFront = criar_10x10() 
-matrizJogadorBack = criar_10x10()
-matrizComputadorFront = criar_10x10()
-matrizComputadorFront = criar_10x10()
+    print()
+
+    for i in range(len(matriz)):
+        print(matriz[i])
+        
+    print()
+
+matrizJogadorFront = criar_11x11() 
+matrizJogadorBack = criar_11x11()
+matrizComputadorFront = criar_11x11()
+matrizComputadorBack = criar_11x11()
 
 def inicio_jogo():
     
-    # printa a embarcação 
-    for i in range(len(matrizComputadorFront)):
-       print(matrizComputadorFront[i])
+    print_matriz(matrizJogadorFront)
 
+    print("Escreva ")
+
+inicio_jogo()
