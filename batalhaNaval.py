@@ -49,7 +49,7 @@ def print_matriz(matriz):
 
     for i in range(len(matriz)):
         print(matriz[i])
-        
+
     print()
 
 matrizJogadorFront = criar_11x11() 
@@ -58,9 +58,10 @@ matrizComputadorFront = criar_11x11()
 matrizComputadorBack = criar_11x11()
 
 def inicio_jogo():
-    
+
     print_matriz(matrizJogadorFront)
 
-    print("Escreva ")
+    print("Selecione as coordenadas com linhas (horizontal) e colunas (vertical), para posicionar a embarcação: ")
+    input("Digite aqui (apenas os números): ")
 
 inicio_jogo()
