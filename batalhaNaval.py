@@ -1,7 +1,7 @@
 # humano x compuador
-# Cada jogador deve ter um tabuleiro (matriz) de tamanho 5x100 ou 100x100 que irá conter as informações
+# Cada jogador deve ter um tabuleiro (matriz) de tamanho 5x10 ou 10x10 que irá conter as informações
 # das coordenadas de cada embarcação, também deverá ter outro tabuleiro (matriz vazia) de tamanho
-# 5x100 ou 100x100 (um para o computador e outro para o jogador) que será exibido como feedback
+# 5x10 ou 10x10 (um para o computador e outro para o jogador) que será exibido como feedback
 # (impresso no console), esse segundo tabuleiro não deve possuir as informações de coordenadas
 # (preencha a matriz com zeros ou qualquer outro caractere que achar adequado). As embarcações devem
 # ocupar um único espaço da matriz. No mínimo 5 embarcações devem ser posicionadas.
@@ -26,21 +26,33 @@
 # programa.
 
 import random
+# conversão de letra para numero, coordenadas das linhas
+a = 1
+b = 2
+c = 3
+d = 4
+e = 5
+f = 6
+g = 7
+h = 8
+i = 9
+j = 10
 
-def criar_11x11(): # <-- isso aqui é gambiarra pra fazer o 100x100 com feedback pro usuario
+
+def criar_11x11(): # <-- isso aqui é gambiarra pra fazer o 10x10 com feedback pro usuario
 
     return [
-    ['XX','01','02','03','04','05','06','07','08','09','10'],
-    ['01','00','00','00','00','00','00','00','00','00','00'],
-    ['02','00','00','00','00','00','00','00','00','00','00'],
-    ['03','00','00','00','00','00','00','00','00','00','00'],
-    ['04','00','00','00','00','00','00','00','00','00','00'],
-    ['05','00','00','00','00','00','00','00','00','00','00'],
-    ['06','00','00','00','00','00','00','00','00','00','00'],
-    ['07','00','00','00','00','00','00','00','00','00','00'],
-    ['08','00','00','00','00','00','00','00','00','00','00'],
-    ['09','00','00','00','00','00','00','00','00','00','00'],
-    ['10','00','00','00','00','00','00','00','00','00','00'],
+    ['X','1','2','3','4','5','6','7','8','9','10'],
+    ['A','0','0','0','0','0','0','0','0','0','0'],
+    ['B','0','0','0','0','0','0','0','0','0','0'],
+    ['C','0','0','0','0','0','0','0','0','0','0'],
+    ['D','0','0','0','0','0','0','0','0','0','0'],
+    ['E','0','0','0','0','0','0','0','0','0','0'],
+    ['F','0','0','0','0','0','0','0','0','0','0'],
+    ['G','0','0','0','0','0','0','0','0','0','0'],
+    ['H','0','0','0','0','0','0','0','0','0','0'],
+    ['I','0','0','0','0','0','0','0','0','0','0'],
+    ['J','0','0','0','0','0','0','0','0','0','0'],
     ]
     
 def print_matriz(matriz):
@@ -57,11 +69,19 @@ matrizJogadorBack = criar_11x11()
 matrizComputadorFront = criar_11x11()
 matrizComputadorBack = criar_11x11()
 
+def inserir_na_matriz(matriz, linha, coluna, caractere):
+    matriz[linha][coluna].pop()
+    matriz[linha][coluna]
+    pass
+
+
 def inicio_jogo():
 
     print_matriz(matrizJogadorFront)
 
-    print("Selecione as coordenadas com linhas (horizontal) e colunas (vertical), para posicionar a embarcação: ")
-    input("Digite aqui (apenas os números): ")
+    print("Selecione as coordenadas com LINHAS (horizontal) e COLUNAS (vertical), para posicionar a embarcação: ")
+
+    linha = input("Digite a linha (LETRA) aqui: ").strip().lower()
+    coluna = int(input("Digite a coluna (NUMERO) aqui: ")) # FAZER TRATAMENTO DE ERRO SE ELE ESCOLHER ALGO INVÁLIDO (FORA DO RANGE OU LETRA)
 
 inicio_jogo()
