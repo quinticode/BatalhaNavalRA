@@ -51,5 +51,6 @@ def inicio_jogo():
     
     # printa a embarcação 
     for i in range(len(matrizComputadorFront)):
-       print(matrizComputadorFront[i])
+        print(matrizComputadorFront[i])
+        print("oi")
 
