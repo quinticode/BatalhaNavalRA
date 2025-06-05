@@ -24,25 +24,52 @@
 # Quando um dos jogadores conseguir afundar toda a frota inimiga, o programa informa a vitória do jogador
 # vencedor, exibe agradecimentos ao jogador humano e o nome dos integrantes da equipe e encerra o
 # programa.
+#
+# Desafio (nota extra): Implementar o jogo batalha naval original, de forma que possua todas as
+# embarcações, sendo elas: Porta-aviões (ocupando 5 posições), Navio-tanque (ocupando 4
+# posições), Contratorpedeiro (ocupando 3 posições), Submarino (ocupando duas posições) e
+# Destroier (ocupando 1 posição). Neste modo a embarcação só afunda quando todas as posições
+# dela tiverem sido atingidas. Quando uma embarcação tiver todas as suas partes atingidas, a
+# embarcação é então afundada e o jogador pode atacar novamente.
 
 import random
-# conversão de letra para numero, coordenadas das linhas
-a = 1
-b = 2
-c = 3
-d = 4
-e = 5
-f = 6
-g = 7
-h = 8
-i = 9
-j = 10
+import tkinter as tk
 
+# conversão de letra para numero, coordenadas das linhas
+def converter_letra(letra):
+    if letra == "a":
+        return 1
+    elif letra == "b":
+        return 2
+    elif letra == "c":
+        return 3
+    elif letra == "d":
+        return 4
+    elif letra == "e":
+        return 5
+    elif letra == "f":
+        return 6
+    elif letra == "g":
+        return 7
+    elif letra == "h":
+        return 8
+    elif letra == "i":
+        return 9
+    elif letra == "j":
+        return 10
+
+def converter_eixo(eixo):
+    if eixo == "horizontal":
+        return "x"
+    elif eixo == "vertical":
+        return "y"
+    else:
+        return -1
 
 def criar_11x11(): # <-- isso aqui é gambiarra pra fazer o 10x10 com feedback pro usuario
 
     return [
-    ['X','1','2','3','4','5','6','7','8','9','10'],
+    ['-','1','2','3','4','5','6','7','8','9','10'],
     ['A','0','0','0','0','0','0','0','0','0','0'],
     ['B','0','0','0','0','0','0','0','0','0','0'],
     ['C','0','0','0','0','0','0','0','0','0','0'],
@@ -70,18 +97,57 @@ matrizComputadorFront = criar_11x11()
 matrizComputadorBack = criar_11x11()
 
 def inserir_na_matriz(matriz, linha, coluna, caractere):
-    matriz[linha][coluna].pop()
-    matriz[linha][coluna]
-    pass
+    matriz[linha][coluna] = caractere
+
+def verificar_posicao(matriz, linha, coluna):
+    if matriz[linha][coluna] != '0':
+        print("Local já ocupado!")
+
+def print_info_barco(nome, tamanho):
+    print(f"Você está posicionando o {nome}, ele possui TAMANHO {tamanho}")
+
+def posicionar_porta():
+
+    print_info_barco("PORTA-AVIÕES","5") 
+
+    print("Escolha o eixo para posicionar o barco: ")
+    print("[HORIZONTAL] ou [x] | [VERTICAL] ou [y]\n")
+
+
+    direcao = input("Escolha o eixo: ")
+
+    print_matriz(matrizJogadorFront)
+
+    print("Selecione as coordenadas com LINHAS (horizontal) e COLUNAS (vertical), para posicionar o barco PORTA-AVIÕES: ")
+    if direcao == "x":
+        print("Ele se estenderá da esquerda para a direita")
+    elif direcao == "y":
+        print("Ele se estenderá de cima para baixo")
+    
+    
+    print("")
+    linha = input("Digite a linha (LETRA) da posição aqui: ").strip().lower()
+    linha = converter_letra(linha)
+    coluna = int(input("Digite a coluna (NUMERO) da posição aqui: ")) # FAZER TRATAMENTO DE ERRO SE ELE ESCOLHER ALGO INVÁLIDO (FORA DO RANGE OU LETRA)
 
 
 def inicio_jogo():
 
-    print_matriz(matrizJogadorFront)
+    posicionar_porta()
 
-    print("Selecione as coordenadas com LINHAS (horizontal) e COLUNAS (vertical), para posicionar a embarcação: ")
+    print_matriz(matrizJogadorFront)
+    
+    print("")
 
     linha = input("Digite a linha (LETRA) aqui: ").strip().lower()
+    linha = converter_letra(linha)
     coluna = int(input("Digite a coluna (NUMERO) aqui: ")) # FAZER TRATAMENTO DE ERRO SE ELE ESCOLHER ALGO INVÁLIDO (FORA DO RANGE OU LETRA)
 
+    verificar_posicao(matrizJogadorBack, linha, coluna)
+    
+    inserir_na_matriz(matrizJogadorFront, linha, coluna, '🟩')
+    inserir_na_matriz(matrizJogadorBack, linha, coluna, '1')
+    print_matriz(matrizJogadorFront)
+
+inicio_jogo()
 inicio_jogo()
