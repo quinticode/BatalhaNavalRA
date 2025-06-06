@@ -37,33 +37,34 @@ import tkinter as tk
 
 # conversão de letra para numero, coordenadas das linhas
 def converter_letra(letra):
-    if letra == "a":
+    if letra == "a" or letra == "1":
         return 1
-    elif letra == "b":
+    elif letra == "b" or letra == "2":
         return 2
-    elif letra == "c":
+    elif letra == "c" or letra == "3":
         return 3
-    elif letra == "d":
+    elif letra == "d" or letra == "4":
         return 4
-    elif letra == "e":
+    elif letra == "e" or letra == "5":
         return 5
-    elif letra == "f":
+    elif letra == "f" or letra == "6":
         return 6
-    elif letra == "g":
+    elif letra == "g" or letra == "7":
         return 7
-    elif letra == "h":
+    elif letra == "h" or letra == "8":
         return 8
-    elif letra == "i":
+    elif letra == "i" or letra == "9":
         return 9
-    elif letra == "j":
+    elif letra == "j" or letra == "10":
         return 10
 
 def converter_eixo(eixo):
-    if eixo == "horizontal":
+    if eixo == "horizontal" or eixo == "x":
         return "x"
-    elif eixo == "vertical":
+    elif eixo == "vertical" or eixo == "y":
         return "y"
     else:
+        print("Digite um valor válido!")
         return -1
 
 def criar_11x11(): # <-- isso aqui é gambiarra pra fazer o 10x10 com feedback pro usuario
@@ -108,21 +109,25 @@ def print_info_barco(nome, tamanho):
 
 def posicionar_porta():
 
-    print_info_barco("PORTA-AVIÕES","5") 
+    barco = "PORTA-AVIÕES"
+    tamanho = 5
+    eixo = -1
+
+    print_info_barco(barco,tamanho) 
 
     print("Escolha o eixo para posicionar o barco: ")
     print("[HORIZONTAL] ou [x] | [VERTICAL] ou [y]\n")
 
-
-    direcao = input("Escolha o eixo: ")
+    while eixo == -1:
+        eixo = input("Escolha o eixo: ").lower()
+        eixo = converter_eixo(eixo)
 
     print_matriz(matrizJogadorFront)
 
-    print("Selecione as coordenadas com LINHAS (horizontal) e COLUNAS (vertical), para posicionar o barco PORTA-AVIÕES: ")
-    if direcao == "x":
-        print("Ele se estenderá da esquerda para a direita")
-    elif direcao == "y":
-        print("Ele se estenderá de cima para baixo")
+    if eixo == "x":
+        print(f"Você escolheu o eixo HORIZONTAL, o {barco} se estenderá 5 CASAS da ESQUERDA para a DIREITA")
+    elif eixo == "y":
+        print(f"Você escolheu o eixo VERTICAL, o {barco} se estenderá 5 CASAS de CIMA para BAIXO")
     
     
     print("")
