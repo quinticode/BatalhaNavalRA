@@ -149,33 +149,67 @@ def verificar_posicao(matriz, linha, coluna):
     if matriz[linha][coluna] != '0':
         print("Local já ocupado!")
 
-def posicionar_barco_hor(matriz,linha,coluna,tamanho):
+def posicionar_barco_hor(matriz,linha,coluna,tamanho,direcao):
         
-        podePosicionar = True
+        repetir = True # o jeito menos pior que consegui fazer pra repetir
 
-        for i in range(tamanho):
-            if matriz[linha][coluna] > matriz[linha][10] or matriz[linha+i][coluna+i] == -1: # se ele sair do tabuleiro, ou bater num barco(-1), ele seta podePosicionar como falso
-                podePosicionar = False
+        id = tamanho # só pra ficar mais claro. o número que aparece na matriz é o id do barco. por convenção decidi deixar como o tamanho dele.
+            
+        while repetir:
 
-        if podePosicionar: # preenche as devidas posicoes com o barco
-            for i in range(tamanho):
-                matriz[linha][coluna+i] = -1
-        else:
-            print("O seu barco está saindo do tabuleiro ou colidindo com outro barco! Escolha uma posição válida!")
-            input_coord()
+            podePosicionar = True # isso verifica se o barco pode ser posicionado. se nao puder, ele vira falso
 
-def print_info_barco(nome, tamanho):
-    print(f"Você está posicionando o {nome}, ele possui TAMANHO {tamanho}")
+            linha, coluna = input_coord() # pega o input da linha e da coluna
 
-def posicionar_porta():
+            if direcao == "x": # eixo horizontal
 
-    barco = "PORTA-AVIÕES"
-    tamanho = 5
-    eixo = -1
+                for i in range(tamanho):
+                    if coluna > (12 - tamanho) or matriz[linha][coluna+i] != 0: # se ele sair do tabuleiro, ou bater num barco, ele seta podePosicionar como falso
+                        podePosicionar = False
+                        
+                if podePosicionar: # verifica se passou no teste ali atras
+                    repetir = False
+                    for i in range(tamanho): # poe o barco na horizontal, com o id dele na matriz
+                        matriz[linha][coluna+i] = id
+
+                else:
+                    print("O seu barco está saindo do tabuleiro ou colidindo com outro barco! Escolha uma posição válida!")
+
+            elif direcao == "y":
+                for i in range(tamanho):
+                    if linha > (12 - tamanho) or matriz[linha+i][coluna] != 0: # se ele sair do tabuleiro, ou bater num barco, ele seta podePosicionar como falso
+                        podePosicionar = False
+
+                if podePosicionar: # verifica se passou no teste ali atras
+                    repetir = False
+                    for i in range(tamanho): # poe o barco na vertical, com o id dele na matriz
+                        matriz[linha+i][coluna] = id
+
+                else:
+                    print("O seu barco está saindo do tabuleiro ou colidindo com outro barco! Escolha uma posição válida!")
+
+
+def posicionar_barco(barco):
+
+    if barco == "PORTA-AVIÕES":
+        tamanho = 5
+    elif barco == "NAVIO-TANQUE":
+        tamanho = 4
+    elif barco == "CONTRATORPEDEIRO":
+        tamanho = 3
+    elif barco == "SUBMARINO":
+        tamanho = 2
+    elif barco == "DESTROIER":
+        tamanho = 1
+    else:
+        print(f"ERRO! dev digitou barco inexistente! {barco}")
+
+    eixo = -1 # isso aqui é pra fazer loop caso o usuário digite um valor inadequado, adicionei funcoes que retornam -1 nesses casos.
     linha = -1
     coluna = -1
 
-    print_info_barco(barco,tamanho) 
+    print(f"Você está posicionando o {barco}, ele possui TAMANHO {tamanho}")
+
 
     print("Escolha o eixo para posicionar o barco: ")
     print("[HORIZONTAL] ou [x] | [VERTICAL] ou [y]\n")
@@ -186,11 +220,9 @@ def posicionar_porta():
 
     print_matriz(matrizJogadorBack)
 
-    linha, coluna = input_coord()
+ #   if eixo == "x": # ARRUMA ESSA BAGAÇA DESSE LOOP QUE TA HORRIVEL NAO TA FUNCINOANDO TO FAZENDO FAZ UMA HORA EU QUERO DORMIR E TEM COISA MAIS IMPORTANTE PRA FAZER
 
-    if eixo == "x": # ARRUMA ESSA BAGAÇA DESSE LOOP QUE TA HORRIVEL NAO TA FUNCINOANDO TO FAZENDO FAZ UMA HORA EU QUERO DORMIR E TEM COISA MAIS IMPORTANTE PRA FAZER
-
-        posicionar_barco_hor(matrizJogadorBack,linha,coluna,tamanho)
+    posicionar_barco_hor(matrizJogadorBack,linha,coluna,tamanho,eixo)
             
                 
     # elif eixo == "y":
@@ -200,7 +232,12 @@ def posicionar_porta():
 
 def inicio_jogo():
 
-    posicionar_porta()
+    posicionar_barco("PORTA-AVIÕES") # tamanho 5
+    posicionar_barco("NAVIO-TANQUE") # 4
+    posicionar_barco("CONTRATORPEDEIRO") # 3
+    posicionar_barco("SUBMARINO") # 2
+    posicionar_barco("DESTROIER") # 1
+
 
     print_matriz(matrizJogadorBack)
     
@@ -208,12 +245,12 @@ def inicio_jogo():
 
     linha = input("Digite a linha (caractere) aqui: ").strip().lower()
     linha = converter_caractere(linha)
-    coluna = int(input("Digite a coluna (NUMERO) aqui: ")) # FAZER TRATAMENTO DE ERRO SE ELE ESCOLHER ALGO INVÁLIDO (FORA DO RANGE OU caractere)
+    coluna = int(input("Digite a coluna (NUMERO) aqui: ")) 
 
     verificar_posicao(matrizJogadorBack, linha, coluna)
     
     inserir_na_matriz(matrizJogadorFront, linha, coluna, '🟩')
-    inserir_na_matriz(matrizJogadorBack, linha, coluna, '1')
+    inserir_na_matriz(matrizJogadorBack, linha, coluna, )
     print_matriz(matrizJogadorFront)
 
 inicio_jogo()
