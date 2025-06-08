@@ -34,6 +34,7 @@
 
 import random
 import tkinter as tk
+import time
 
 # conversão de caractere para numero, coordenadas das linhas
 def converter_caractere(caractere):
@@ -128,16 +129,17 @@ def criar_matriz_back(): # <-- isso aqui é gambiarra pra fazer o 10x10 com feed
 def criar_vidas_barcos():
     return [1,2,3,4,5]
 
-def verificar_qtd_barcos(listaBarcos,barcoAtingido):
+def pegar_qtd_barcos(listaBarcos,barcoAtingido): #
 
     qtdBarcos = 0
 
-    for i in range(len(listaBarcos)):
+    for i in range(len(listaBarcos)): # percorre as listas de vidas de barcos
 
-        if listaBarcos[i] == barcoAtingido:
-            listaBarcos[i] -= 1
+        # vidas dos barcos: [1,2,3,4,5]
+        if listaBarcos[i] == barcoAtingido: # se a posicao da lista for igual ao id do barcoAtingido, 
+            listaBarcos[i] -= 1 # entao ele subtrai um ponto de vida daquele tipo do barco
 
-        if listaBarcos[i] != 0:
+        if listaBarcos[i] != 0: # se a vida do barco nao for 0, ele ainda está vivo, entao aumenta a qtdBarcos
             qtdBarcos += 1
     
     return qtdBarcos, listaBarcos
@@ -174,10 +176,10 @@ matrizComputadorBack = criar_matriz_back()
 
 def verificar_acerto_tiro(matrizBack, matrizFront, linha, coluna):
 
-    if matrizBack[linha][coluna] != 0 and matrizBack[linha][coluna] != -1: # ISSO SIGNIFICA QUE BATEU EM UM BARCO
-        barcoAtingido = matrizBack[linha][coluna]
-        matrizBack[linha][coluna] = 6
-        matrizFront[linha][coluna] = '💥'
+    if matrizBack[linha][coluna] != 0 and matrizBack[linha][coluna] != -1: # <- ISSO SIGNIFICA QUE ACERTOU EM UM BARCO
+        barcoAtingido = matrizBack[linha][coluna] # <- pega o tipo do barco que foi atingido e salva na variável barcoAtingido
+        matrizBack[linha][coluna] = 6 # <- poe 6 na matriz back do que foi atingido
+        matrizFront[linha][coluna] = '💥' 
         return barcoAtingido
 
     elif matrizBack[linha][coluna] == 0:
@@ -227,9 +229,10 @@ def adicionar_barco_matriz(matriz,linha,coluna,tamanho,direcao):
                 else:
                     print("O seu barco está saindo do tabuleiro ou colidindo com outro barco! Escolha uma posição válida!")
 
-def converter_matriz(matrizIn, matrizOut, condicao):
+def print_matriz_convertida(matrizIn, matrizOut, situacao, jogador): # nao gosto dessa soluçao, percorre toda a matriz(sem contar a legenda) e vai convertendo os simbolos
 
-    if condicao == "posicionando":
+    print(f"Tabuleiro do {jogador}")
+    if situacao == "posicionando":
         for linha in range(1,11):
             for coluna in range(1,11):
                 if matrizIn[linha][coluna] == 5:
@@ -243,15 +246,16 @@ def converter_matriz(matrizIn, matrizOut, condicao):
                 elif matrizIn[linha][coluna] == 1:
                     matrizOut[linha][coluna] = "⬜️"
     
-    elif condicao == "jogando":
-        for linha in range(1,11):
-            for coluna in range(1,11):
-                if matrizIn[linha][coluna] == 6:
-                    matrizOut[linha][coluna] = '💥'
-                elif matrizIn[linha][coluna] == 7:
-                    matrizOut[linha][coluna] = '🌀'
-                else:
-                    matrizOut[linha][coluna] = '🌊'
+    elif situacao == "jogando": 
+        # for linha in range(1,11):
+        #     for coluna in range(1,11):
+        #         if matrizIn[linha][coluna] == 6:
+        #             matrizOut[linha][coluna] = '💥'
+        #         elif matrizIn[linha][coluna] == 7:
+        #             matrizOut[linha][coluna] = '🌀'
+        #         else:
+        #             matrizOut[linha][coluna] = '🌊'
+        pass
 
     return print_matriz(matrizOut)
 
@@ -291,7 +295,7 @@ def posicionar_barco_jogador(barco,jogador):
     print_matriz(matrizFront)
 
     adicionar_barco_matriz(matrizBack,linha,coluna,tamanho,eixo) # <- input_coord() ta aqui dentro
-    converter_matriz(matrizBack,matrizFront,"posicionando")
+    print_matriz_convertida(matrizBack,matrizFront,"posicionando","Jogador")
 
 def posicionar_barco_computador(barco):
 
@@ -341,33 +345,29 @@ def posicionar_barco_computador(barco):
                 for i in range(tamanho):
                     matrizComputadorBack[linha+i][coluna] = id
         
-def jogador_atacar(jogador):
+def input_jogador_atacar(jogador):
 
     linhaAtacar = -1
-
     colunaAtacar = -1
 
-    linhaAtacar = input("Digite a posição da LINHA (LETRA) para atacar!")
-    linhaAtacar = converter_caractere(linhaAtacar)
-    colunaAtacar = int(input("Digite a posição da COLUNA (NUMERO) para atacar!"))
-    colunaAtacar = verificar_numero(colunaAtacar)
+    while linhaAtacar == -1:
+        linhaAtacar = input("Digite a posição da LINHA (LETRA) para atacar!")
+        linhaAtacar = converter_caractere(linhaAtacar)
+
+    while colunaAtacar == -1:
+        colunaAtacar = int(input("Digite a posição da COLUNA (NUMERO) para atacar!"))
+        colunaAtacar = verificar_numero(colunaAtacar)
 
     return linhaAtacar, colunaAtacar
 
-def barcos_danificados(barcoAtingido,jogador):
+def input_computador_atacar():
 
+    linhaAtacar = random.randint(1,10)
+    colunaAtacar = random.randint(1,10)
 
-    if barcoAtingido == 5:
-        pass
+    return linhaAtacar, colunaAtacar
 
-
-
-def inicio_jogo():
-
-    qtdBarcosJ1 = 5
-    qtdBarcosIA = 5
-    listaBarcosJ1 = criar_vidas_barcos()
-    listaBarcosIa = criar_vidas_barcos()
+def pre_jogo():
 
     # Pede para o humano posicionar os barcos
     posicionar_barco_jogador("PORTA-AVIÕES","humano1") # tamanho 5
@@ -376,8 +376,8 @@ def inicio_jogo():
     posicionar_barco_jogador("SUBMARINO","humano1") # 2
     posicionar_barco_jogador("DESTROIER","humano1") # 1
 
-    print_matriz(matrizJogadorBack)
-
+    print("Agora o computador vai posicionar os barcos! Aguarde...")
+    time.sleep(.5)
     # Faz o computador posicionar os barcos
     posicionar_barco_computador("PORTA-AVIÕES")
     posicionar_barco_computador("NAVIO-TANQUE")
@@ -385,32 +385,61 @@ def inicio_jogo():
     posicionar_barco_computador("SUBMARINO")
     posicionar_barco_computador("DESTROIER")
 
-    converter_matriz(matrizComputadorBack,matrizComputadorFront,"posicionando")
-    
-    print("")
+def inicio_jogo():
 
-    linhaAtacar, colunaAtacar = jogador_atacar("jogador1")
+    pre_jogo() # posicionamento dos barcos
+
+    qtdBarcosJ1 = 5
+    qtdBarcosIA = 5
+    listaBarcosJ1 = criar_vidas_barcos()
+    listaBarcosIa = criar_vidas_barcos()
+
+    fimDoJogo = False
+
+    while not fimDoJogo:
+
+        print_matriz_convertida(matrizComputadorBack,matrizComputadorFront,"jogando", "computador")
+        # print_matriz(matrizComputadorBack) se quiser testar tira o comentario
+        print_matriz_convertida(matrizJogadorBack,matrizJogadorFront,"jogando", "jogador")
+        # print_matriz(matrizJogadorBack)
+
+        
+        # input das coord de atk do jogador
+        linhaAtacar, colunaAtacar = input_jogador_atacar("jogador1")
+
+        # verifica onde foi o tiro, e devolve o id pro barcoAtingido
+        barcoAtingido = verificar_acerto_tiro(matrizComputadorBack, matrizComputadorFront, linhaAtacar, colunaAtacar) 
+
+        if barcoAtingido != None:
+            print(f"O(a) JOGADOR(A) ACERTOU o tiro! 💥")
+        elif barcoAtingido == None:
+            print(f"O(a) JOGADOR(A) ERROU o tiro! 🌀 ")
+
+        print_matriz_convertida(matrizComputadorBack,matrizComputadorFront,"jogando","computador")
+        qtdBarcosIA, listaBarcosIa = pegar_qtd_barcos(listaBarcosIa,barcoAtingido)
+
+        print(f"Computador tem {qtdBarcosIA} BARCOS VIVOS")
+
+        ###########
+        
+        print_matriz_convertida(matrizJogadorBack,matrizJogadorFront,"jogando","jogador")
+
+        linhaAtacar, colunaAtacar = input_computador_atacar()
+
+        barcoAtingido = verificar_acerto_tiro(matrizJogadorBack,matrizJogadorFront, linhaAtacar, colunaAtacar)
+
+        if barcoAtingido != None:
+            print(f"O Computador ACERTOU o tiro! 💥")
+        elif barcoAtingido == None:
+            print(f"O Computador ERROU o tiro! 🌀")
+
+        print_matriz_convertida(matrizJogadorBack,matrizJogadorFront,"jogando","jogador")
+        qtdBarcosJ1, listaBarcosJ1 = pegar_qtd_barcos(listaBarcosJ1, barcoAtingido)
+
+        print(f"O jogador tem {qtdBarcosJ1} BARCOS VIVOS")
 
 
-
-    barcoAtingido = verificar_acerto_tiro(matrizComputadorBack, matrizComputadorFront, linhaAtacar, colunaAtacar)
-    converter_matriz(matrizComputadorBack,matrizComputadorFront,"jogando")
-    
-
-    print_matriz(matrizComputadorFront)
-    qtdBarcosIA, listaBarcosIa = verificar_qtd_barcos(listaBarcosIa,barcoAtingido)
-    print(f"IA TEM {qtdBarcosIA} BARCOS VIVOS")
-    print_matriz(matrizJogadorFront)
-
-    linha = input("Digite a linha (caractere) aqui: ").strip().lower()
-    linha = converter_caractere(linha)
-    coluna = int(input("Digite a coluna (NUMERO) aqui: "))
-
-    inserir_na_matriz(matrizJogadorBack, linha, coluna, 6)
-    
-    inserir_na_matriz(matrizJogadorFront, linha, coluna, '🟩')
-    inserir_na_matriz(matrizJogadorBack, linha, coluna, )
-    print_matriz(matrizJogadorFront)
+   
 
 inicio_jogo()
 inicio_jogo()
