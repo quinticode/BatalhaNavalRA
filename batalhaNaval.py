@@ -33,7 +33,6 @@
 # embarcação é então afundada e o jogador pode atacar novamente.
 
 import random
-import tkinter as tk
 import time
 
 # conversão de caractere para numero, coordenadas das linhas
@@ -68,7 +67,6 @@ def verificar_numero(numero): # para a pessoa nao digitar "A" e sair como "1" na
         return numero
     else:
         return -1
-
 
 def converter_eixo(eixo):
     if eixo == "horizontal" or eixo == "x" or eixo == "h" or eixo == 0:
@@ -145,8 +143,6 @@ def pegar_qtd_barcos(vidaBarcos,barcoAtingido): #
             qtdBarcos += 1
     
     return qtdBarcos, vidaBarcos
-        
-
 
 def print_matriz(matriz):
 
@@ -431,9 +427,9 @@ def inicio_jogo():
 
 
     print_matriz_convertida(matrizComputadorBack,matrizComputadorFront,"jogando", "computador")
-    print_matriz(matrizComputadorBack) #se quiser testar tira o comentario
+    # print_matriz(matrizComputadorBack) # se quiser testar tira o comentario
     print_matriz_convertida(matrizJogadorBack,matrizJogadorFront,"jogando", "jogador")
-    print_matriz(matrizJogadorBack)
+    # print_matriz(matrizJogadorBack)
 
     while vitoria == "nao":
 
