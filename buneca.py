@@ -1,8 +1,6 @@
 import random
 import time
 
-tempo = 1
-
 # conversão de caractere para numero, coordenadas das linhas
 def converter_caractere(caractere):
     if caractere == "a" or caractere == "1":
@@ -120,22 +118,25 @@ def adicionar_barco_matriz(matriz,linha,coluna,tamanho,direcao):
 def criar_vidas_barcos():
     return [1,2,3,4,5]
 
-def pegar_qtd_barcos(vidaBarcos, barcoAtingido):
+def pegar_qtd_barcos(vidaBarcos,barcoAtingido):
+
     afundouBarco = False
     qtdBarcos = 0
 
-    indice = barcoAtingido - 1  # IDs vão de 1 a 5, lista vai de 0 a 4
-    if 0 <= indice < len(vidaBarcos):
-        vidaBarcos[indice] -= 1
-        if vidaBarcos[indice] == 0:
-            afundouBarco = True
+    for i in range(len(vidaBarcos)): # percorre as listas de vidas de barcos
+        listaBarcos = [1,2,3,4,5]
+        # vidas dos barcos: [1,2,3,4,5]
 
-    for vida in vidaBarcos:
-        if vida > 0:
+        if listaBarcos[i] == barcoAtingido: # se a posicao da lista for igual ao id do barcoAtingido,
+
+            vidaBarcos[i] -= 1 # entao ele subtrai um ponto de vida daquele tipo do barco
+            if vidaBarcos[i] == 0:
+                afundouBarco = True
+
+        if vidaBarcos[i] != 0: # se a vida do barco nao for 0, ele ainda está vivo, entao aumenta a qtdBarcos
             qtdBarcos += 1
-
+    
     return qtdBarcos, vidaBarcos, afundouBarco
-
 
 
 def input_coord():
@@ -282,9 +283,6 @@ def input_jogador_atacar(jogador):
     linhaAtacar = -1
     colunaAtacar = -1
 
-    print("Vez do jogador atacar!")
-    time.sleep(.5)
-
     while linhaAtacar == -1:
         linhaAtacar = input("Digite a posição da LINHA (LETRA) para atacar!")
         linhaAtacar = converter_caractere(linhaAtacar)
@@ -296,9 +294,6 @@ def input_jogador_atacar(jogador):
     return linhaAtacar, colunaAtacar
 
 def input_computador_atacar():
-
-    print("Vez do computador atacar!")
-    time.sleep(.8)
 
     linhaAtacar = random.randint(1,10)
     colunaAtacar = random.randint(1,10)
@@ -357,19 +352,93 @@ def inicio_jogo():
     vitoria = "nao"
 
     print_matriz_convertida(matrizComputadorBack,matrizComputadorFront,"jogando", "computador")
-    print_matriz(matrizComputadorBack) # se quiser testar tira o comentario
+    # print_matriz(matrizComputadorBack) # se quiser testar tira o comentario
     print_matriz_convertida(matrizJogadorBack,matrizJogadorFront,"jogando", "jogador")
-    print_matriz(matrizJogadorBack)
+    # print_matriz(matrizJogadorBack)
+
+
+
+def rodada(jogador):
+
+    jogando = True
+
+    while jogando:
+        
+        qtdBarcos = 5
+        
+        if jogador == "jogador1":
+            matrizAliadaBack = matrizJogadorBack
+            matrizAliadaFront = matrizJogadorFront
+            matrizInimigaBack = matrizComputadorBack
+            matrizInimigaFront = matrizComputadorFront
+            qtdBarcosAliada = qtdBarcosJ1
+            qtdBarcosInimiga = qtdBarcosIa
+            vidaBarcosAliada = vidaBarcosJ1
+            vidaBarcosInimiga = vidaBarcosIa
+
+            linhaAtacar, colunaAtacar = input_jogador_atacar("jogador1")
+
+        elif jogador == "computador":
+            matrizAliadaBack = matrizComputadorBack
+            matrizAliadaFront = matrizComputadorFront
+            matrizInimigaBack = matrizJogadorBack
+            matrizInimigaFront = matrizJogadorFront
+            qtdBarcosAliada = qtdBarcosIa
+            qtdBarcosInimiga = qtdBarcosJ1
+            vidaBarcosAliada = vidaBarcosIa        
+            vidaBarcosInimiga = vidaBarcosJ1
+
+            linhaAtacar, colunaAtacar = input_computador_atacar()
+
+        if matrizInimigaBack[linhaAtacar][colunaAtacar] == 6 or matrizInimigaBack[linhaAtacar][colunaAtacar] == 7:
+            print("Está posição já foi atacada! Escolha uma posição válida!")
+            continue
+
+        barcoAtingido = verificar_acerto_tiro(matrizInimigaBack, matrizInimigaFront, linhaAtacar, colunaAtacar)
+
+        if barcoAtingido != None:
+
+            acertou = True            
+            qtdBarcosAliada, vidaBarcosAliada, afundou = pegar_qtd_barcos(vidaBarcosAliada,barcoAtingido)
+
+            if afundou:
+                print_tabuleiro_jogo(qtdBarcosIa, qtdBarcosJ1)
+                if jogador == "jogador1":
+                    print("Você AFUNDOU um navio inimigo! Você pode atacar novamente! 💥")
+                elif jogador == "computador":
+                    print("O Computador AFUNDOU o seu NAVIO e pode jogar novamente! 💥")
+
+                if checar_fim(qtdBarcosIa,qtdBarcosJ1) != "nao":
+                    jogando = False
+                    break
+
+                continue
+            else:
+                jogando = False
+
+        elif barcoAtingido == None:
+            acertou = False
+            jogando = False
+
+        print_tabuleiro_jogo(qtdBarcosIa,qtdBarcosJ1)
+
+        if acertou:
+            print(f"O {jogador.strip(1)} ACERTOU o tiro! 💥 ")
+        else:
+            print(f"O {jogador.strip(1)} ERROU o tiro! 🌀 ")
+
+
 
     while vitoria == "nao":
 
-        jogando = True
+        # jogando = True
 
         #JOGADA JOGADOR
-        while jogando:
+        # while jogando:
                         
-            linhaAtacar, colunaAtacar = input_jogador_atacar("jogador1")
+            # linhaAtacar, colunaAtacar = input_jogador_atacar("jogador1")
 
+            rodada()
             if matrizComputadorBack[linhaAtacar][colunaAtacar] == 6 or matrizComputadorBack[linhaAtacar][colunaAtacar] == 7:
                 print("Está posição já foi atacada! Escolha uma posição válida!")
                 continue
@@ -380,17 +449,15 @@ def inicio_jogo():
             if barcoAtingido != None:
 
                 acertou = True
-                qtdBarcosIa, vidaBarcosIa, afundou = pegar_qtd_barcos(vidaBarcosIa,barcoAtingido)
+                qtdBarcosJ1, vidaBarcosJ1, afundou = pegar_qtd_barcos(vidaBarcosJ1,barcoAtingido)
 
                 if afundou:
                     print_tabuleiro_jogo(qtdBarcosIa,qtdBarcosJ1)
                     print("Você afundou um navio inimigo! Você pode atacar novamente! 💥")
 
-                    vitoria = checar_fim(qtdBarcosIa, qtdBarcosJ1)
-                    if vitoria != "nao":
+                    if checar_fim(qtdBarcosIa,qtdBarcosJ1) != "nao": # se alguem ganhou
                         jogando = False
                         break
-
 
                     continue # se afundou e ninguem ganhou
                 else:
@@ -416,7 +483,7 @@ def inicio_jogo():
 
             # print_matriz_convertida(matrizJogadorBack,matrizJogadorFront,"jogando","jogador")
 
-            linhaAtacar, colunaAtacar = input_computador_atacar()
+            # linhaAtacar, colunaAtacar = input_computador_atacar()
 
             if matrizJogadorBack[linhaAtacar][colunaAtacar] == 6 or matrizJogadorBack[linhaAtacar][colunaAtacar] == 7:
                 continue
@@ -426,15 +493,13 @@ def inicio_jogo():
             if barcoAtingido != None:
 
                 acertou = True
-                qtdBarcosJ1, vidaBarcosJ1, afundou = pegar_qtd_barcos(vidaBarcosJ1,barcoAtingido)
+                qtdBarcosIa, vidaBarcosIa, afundou = pegar_qtd_barcos(vidaBarcosIa,barcoAtingido)
 
                 if afundou:
                     print_tabuleiro_jogo(qtdBarcosIa,qtdBarcosJ1)
                     print(f"O Computador AFUNDOU o navio e pode jogar novamente! 💥")
 
-                    vitoria = checar_fim(qtdBarcosIa,qtdBarcosJ1)
-                    
-                    if vitoria != "nao": # se alguem ganhou
+                    if checar_fim(qtdBarcosIa,qtdBarcosJ1) != "nao": # se alguem ganhou
                         jogando = False
                         break
 

@@ -1,37 +1,3 @@
-# humano x compuador
-# Cada jogador deve ter um tabuleiro (matriz) de tamanho 5x10 ou 10x10 que irá conter as informações
-# das coordenadas de cada embarcação, também deverá ter outro tabuleiro (matriz vazia) de tamanho
-# 5x10 ou 10x10 (um para o computador e outro para o jogador) que será exibido como feedback
-# (impresso no console), esse segundo tabuleiro não deve possuir as informações de coordenadas
-# (preencha a matriz com zeros ou qualquer outro caractere que achar adequado). As embarcações devem
-# ocupar um único espaço da matriz. No mínimo 5 embarcações devem ser posicionadas.
-#
-# Ao iniciar o jogo, o programa deve solicitar ao jogador todas as coordenadas (linha e coluna) em que serão
-# posicionadas as suas embarcações. As coordenadas das embarcações do computador devem ser definidas
-# de forma aleatória (random). Essas coordenadas deverão ser armazenadas nos tabuleiros que não serão
-# exibidos ao jogador. Depois de definir as posições, o programa deve exibir os dois tabuleiros sem
-# informação das coordenadas de embarcação e a quantidade de embarcações em cada um dos tabuleiros,
-# especificando qual tabuleiro pertence ao computador e qual pertence ao jogador. Em seguida um dos
-# jogadores (humano ou computador) deve realizar seu ataque informando qual coordenada do tabuleiro do
-# adversário deseja atacar. Após o ataque, o tabuleiro adversário que está sendo exibido deve ser atualizado
-# no console, indicando que determinada posição já foi atacada. Caso o ataque tenha atingido uma
-# embarcação inimiga, atualize o caractere na coordenada do tabuleiro exibido para X (sugestão) e escreva
-# uma mensagem ao usuário indicando que houve um acerto de embarcação e quantas embarcações ainda
-# restam. Não esqueça de atualizar também a quantidade de embarcações restantes no tabuleiro atingido.
-# Caso o ataque não tenha atingido uma embarcação inimiga, atualize o caractere na coordenada do
-# tabuleiro exibido para O (sugestão) e escreva uma mensagem ao usuário que não houve acerto em
-# nenhuma embarcação inimiga.
-# Quando um dos jogadores conseguir afundar toda a frota inimiga, o programa informa a vitória do jogador
-# vencedor, exibe agradecimentos ao jogador humano e o nome dos integrantes da equipe e encerra o
-# programa.
-#
-# Desafio (nota extra): Implementar o jogo batalha naval original, de forma que possua todas as
-# embarcações, sendo elas: Porta-aviões (ocupando 5 posições), Navio-tanque (ocupando 4
-# posições), Contratorpedeiro (ocupando 3 posições), Submarino (ocupando duas posições) e
-# Destroier (ocupando 1 posição). Neste modo a embarcação só afunda quando todas as posições
-# dela tiverem sido atingidas. Quando uma embarcação tiver todas as suas partes atingidas, a
-# embarcação é então afundada e o jogador pode atacar novamente.
-
 import random
 import time
 
@@ -60,13 +26,6 @@ def converter_caractere(caractere):
     else:
         print("Digite uma posição válida!")
         return -1
-    
-def verificar_numero(numero): # para a pessoa nao digitar "A" e sair como "1" na coluna, por exemplo
-
-    if numero >= 0 and numero <= 10:
-        return numero
-    else:
-        return -1
 
 def converter_eixo(eixo):
     if eixo == "horizontal" or eixo == "x" or eixo == "h" or eixo == 0:
@@ -77,21 +36,14 @@ def converter_eixo(eixo):
         print("\nDigite um valor válido!\n")
         return -1
 
-def criar_11x11_front():
+def print_matriz(matriz):
 
-    # return [
-    # ['-','1','2','3','4','5','6','7','8','9','10'],
-    # ['A','0','0','0','0','0','0','0','0','0','0'],
-    # ['B','0','0','0','0','0','0','0','0','0','0'],
-    # ['C','0','0','0','0','0','0','0','0','0','0'],
-    # ['D','0','0','0','0','0','0','0','0','0','0'],
-    # ['E','0','0','0','0','0','0','0','0','0','0'],
-    # ['F','0','0','0','0','0','0','0','0','0','0'],
-    # ['G','0','0','0','0','0','0','0','0','0','0'],
-    # ['H','0','0','0','0','0','0','0','0','0','0'],
-    # ['I','0','0','0','0','0','0','0','0','0','0'],
-    # ['J','0','0','0','0','0','0','0','0','0','0'],
-    # ]
+    print()
+    for i in range(len(matriz)):
+        print(matriz[i])
+    print()
+
+def criar_11x11_front():
 
     return [
     ['-',' 1',' 2',' 3',' 4',' 5',' 6',' 7',' 8',' 9','10'],
@@ -111,8 +63,8 @@ def criar_matriz_back():
 
     return [
     # 0 #1 #2 #3 #4 #5 #6 #7 #8 #9 #10#11
-    [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1], #1
-    [-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,-1], #2
+    [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1], 
+    [-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,-1], 
     [-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,-1],
     [-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,-1],
     [-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,-1],
@@ -124,72 +76,6 @@ def criar_matriz_back():
     [-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,-1],
     [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
     ]
-
-def criar_vidas_barcos():
-    return [1,2,3,4,5]
-
-def pegar_qtd_barcos(vidaBarcos,barcoAtingido): #
-
-    qtdBarcos = 0
-
-    for i in range(len(vidaBarcos)): # percorre as listas de vidas de barcos
-        listaBarcos = [1,2,3,4,5]
-        afundouBarco = False
-        # vidas dos barcos: [1,2,3,4,5]
-
-        if listaBarcos[i] == barcoAtingido: # se a posicao da lista for igual ao id do barcoAtingido, 
-            vidaBarcos[i] -= 1 # entao ele subtrai um ponto de vida daquele tipo do barco
-            if vidaBarcos[i] == 0:
-                afundouBarco = True
-
-        if vidaBarcos[i] != 0: # se a vida do barco nao for 0, ele ainda está vivo, entao aumenta a qtdBarcos
-            qtdBarcos += 1
-    
-    return qtdBarcos, vidaBarcos, afundouBarco
-
-def print_matriz(matriz):
-
-    print()
-    for i in range(len(matriz)):
-        print(matriz[i])
-    print()
-
-def input_coord():
-
-    linha = -1
-    coluna = -1
-        
-    while linha == -1:
-        linha = input("Digite a LINHA (LETRA) da posição aqui: ").strip().lower()
-        linha = converter_caractere(linha)
-
-    while coluna == -1:
-        coluna = input("Digite a COLUNA (NUMERO) da posição aqui: ").strip().lower()
-        coluna = converter_caractere(coluna)
-        coluna = verificar_numero(coluna)
-    
-    return linha, coluna
-
-matrizJogadorFront = criar_11x11_front() 
-matrizJogadorBack = criar_matriz_back()
-matrizComputadorFront = criar_11x11_front()
-matrizComputadorBack = criar_matriz_back()
-
-def verificar_acerto_tiro(matrizBack, matrizFront, linha, coluna):
-
-    if matrizBack[linha][coluna] != 0 and matrizBack[linha][coluna] != -1 and matrizBack[linha][coluna] != 7 and matrizBack[linha][coluna] != 6: # <- ISSO SIGNIFICA QUE ACERTOU EM UM BARCO
-        barcoAtingido = matrizBack[linha][coluna] # <- pega o tipo do barco que foi atingido e salva na variável barcoAtingido
-        matrizBack[linha][coluna] = 6 # <- poe 6 na matriz back do que foi atingido
-        matrizFront[linha][coluna] = '💥' 
-        return barcoAtingido
-
-    elif matrizBack[linha][coluna] == 0:
-        matrizBack[linha][coluna] = 7
-        matrizFront[linha][coluna] = '🌀'
-                
-def verificar_posicao(matriz, linha, coluna):
-    if matriz[linha][coluna] != 0:
-        print("Local já ocupado!")
 
 def adicionar_barco_matriz(matriz,linha,coluna,tamanho,direcao):
         
@@ -229,40 +115,83 @@ def adicionar_barco_matriz(matriz,linha,coluna,tamanho,direcao):
 
                 else:
                     print("O seu barco está saindo do tabuleiro ou colidindo com outro barco! Escolha uma posição válida!")
+def criar_vidas_barcos():
+    return [1,2,3,4,5]
 
-def print_matriz_convertida(matrizIn, matrizOut, situacao, jogador): # nao gosto dessa soluçao, percorre toda a matriz(sem contar a legenda) e vai convertendo os simbolos
+def pegar_qtd_barcos(vidaBarcos,barcoAtingido):
+
+    afundouBarco = False
+    qtdBarcos = 0
+
+    for i in range(len(vidaBarcos)): # percorre as listas de vidas de barcos
+        listaBarcos = [1,2,3,4,5]
+        # vidas dos barcos: [1,2,3,4,5]
+
+        if listaBarcos[i] == barcoAtingido: # se a posicao da lista for igual ao id do barcoAtingido,
+
+            vidaBarcos[i] -= 1 # entao ele subtrai um ponto de vida daquele tipo do barco
+            if vidaBarcos[i] == 0:
+                afundouBarco = True
+
+        if vidaBarcos[i] != 0: # se a vida do barco nao for 0, ele ainda está vivo, entao aumenta a qtdBarcos
+            qtdBarcos += 1
+    
+    return qtdBarcos, vidaBarcos, afundouBarco
+
+
+def input_coord():
+
+    linha = -1
+    coluna = -1
+        
+    while linha == -1:
+        linha = input("Digite a LINHA (LETRA) da posição aqui: ").strip().lower()
+        linha = converter_caractere(linha)
+
+    while coluna == -1:
+        coluna = input("Digite a COLUNA (NUMERO) da posição aqui: ").strip().lower()
+        coluna = converter_caractere(coluna)
+        # coluna = verificar_numero(coluna)
+    
+    return linha, coluna
+
+
+def verificar_acerto_tiro(matrizBack, matrizFront, linha, coluna):
+
+    if matrizBack[linha][coluna] != 0 and matrizBack[linha][coluna] != -1 and matrizBack[linha][coluna] != 7 and matrizBack[linha][coluna] != 6: # <- ISSO SIGNIFICA QUE ACERTOU EM UM BARCO
+
+        barcoAtingido = matrizBack[linha][coluna] # <- pega o tipo do barco que foi atingido e salva na variável barcoAtingido
+        matrizBack[linha][coluna] = 6 # <- poe 6 na matriz back do que foi atingido
+        matrizFront[linha][coluna] = '💥' 
+        return barcoAtingido
+
+    elif matrizBack[linha][coluna] == 0:
+        matrizBack[linha][coluna] = 7
+        matrizFront[linha][coluna] = '🌀'
+
+def print_matriz_convertida(matrizBack, matrizFront, situacao, jogador): # nao gosto dessa soluçao, percorre toda a matriz(sem contar a legenda) e vai convertendo os simbolos
 
     print(f"Tabuleiro do {jogador}")
-    if situacao == "posicionando":
-        for linha in range(1,11):
-            for coluna in range(1,11):
-                if matrizIn[linha][coluna] == 5:
-                    matrizOut[linha][coluna] = "⬜️"
-                elif matrizIn[linha][coluna] == 4:
-                    matrizOut[linha][coluna] = "🟥"
-                elif matrizIn[linha][coluna] == 3:
-                    matrizOut[linha][coluna] = "🟩"
-                elif matrizIn[linha][coluna] == 2:
-                    matrizOut[linha][coluna] = "🟨"
-                elif matrizIn[linha][coluna] == 1:
-                    matrizOut[linha][coluna] = "🟧"
+    
+    # esse bloco percorre a matriz e poe o devido simbolo no barco
+    if situacao == "posicionando": 
+
+        simbolos = ["", "🟧", "🟨", "🟩", "🟥", "⬜️"]  #Lista com os símbolos dos barcos
+        for linha in range(1, 11):
+            for coluna in range(1, 11):
+                valor = matrizBack[linha][coluna] # pega a posição respectiva da matriz e atribui a variavel valor
+                if valor >= 1 and valor <= 5: # se o valor for entre 1 e 5 (significa que é um barco)
+                    matrizFront[linha][coluna] = simbolos[valor]  # põe na matriz front o simbolo do barco
+
     
     elif situacao == "jogando": 
-        
+        pass
         for linha in range(1,11): 
             for coluna in range(1,11):
-                if matrizOut[linha][coluna] == "⬜️" or matrizOut[linha][coluna] == "🟥" or matrizOut[linha][coluna] == "🟩" or matrizOut[linha][coluna] == "🟨" or matrizOut[linha][coluna] == "🟧": # aiai
-                    matrizOut[linha][coluna] = "🌊"
+                if matrizBack[linha][coluna] >= 1 and matrizBack[linha][coluna] <= 5:
+                    matrizFront[linha][coluna] = "🌊" #esconde a posição dos barcos para exibir o tabuleiro durante o jogo
 
-        #         if matrizIn[linha][coluna] == 6:
-        #             matrizOut[linha][coluna] = '💥'
-        #         elif matrizIn[linha][coluna] == 7:
-        #             matrizOut[linha][coluna] = '🌀'
-        #         else:
-        #             matrizOut[linha][coluna] = '🌊'
-
-    return print_matriz(matrizOut)
-
+    return print_matriz(matrizFront)
 
 def posicionar_barco_jogador(barco,jogador):
 
@@ -289,8 +218,8 @@ def posicionar_barco_jogador(barco,jogador):
 
     print(f"Você está posicionando o {barco}, ele possui TAMANHO {tamanho}")
 
-    print("Escolha o eixo para posicionar o barco: ")
-    print("[HORIZONTAL] ou [x] | [VERTICAL] ou [y]\n")
+    print("Escolha o eixo/orientação para posicionar o barco: ")
+    print("[HORIZONTAL] ou [x] | [VERTICAL] ou [y]\n") # congratulacoes ao davi (☞ﾟヮﾟ)☞
 
     while eixo == -1:
         eixo = input("Escolha o eixo: ").lower()
@@ -422,78 +351,117 @@ def inicio_jogo():
     vidaBarcosIa = criar_vidas_barcos()
     vitoria = "nao"
 
-    # DIZ QUEM JOGOU, E SE ACERTOU
-    # PRINTA MATRIZ COMPUTADOR
-    # DIZ QUANTOS BARCOS COMPUTADOR
-    # PRINTA MATRIZ HUMANO
-    # DIZ QUANTOS BARCOS HUMANO
-
-
     print_matriz_convertida(matrizComputadorBack,matrizComputadorFront,"jogando", "computador")
-    print_matriz(matrizComputadorBack) # se quiser testar tira o comentario
+    # print_matriz(matrizComputadorBack) # se quiser testar tira o comentario
     print_matriz_convertida(matrizJogadorBack,matrizJogadorFront,"jogando", "jogador")
-    print_matriz(matrizJogadorBack)
+    # print_matriz(matrizJogadorBack)
+
+def rodada(jogador):
+
+    if jogador == "jogador1":
+        matr
+    
+
 
     while vitoria == "nao":
 
-        # VEZ DO JOGADOR
         jogando = True
+
+        #JOGADA JOGADOR
         while jogando:
+                        
             linhaAtacar, colunaAtacar = input_jogador_atacar("jogador1")
-            if matrizComputadorBack[linhaAtacar][colunaAtacar] in [6, 7]:
-                print("Você já atacou essa posição. Tente outra.")
+
+            rodada()
+            if matrizComputadorBack[linhaAtacar][colunaAtacar] == 6 or matrizComputadorBack[linhaAtacar][colunaAtacar] == 7:
+                print("Está posição já foi atacada! Escolha uma posição válida!")
                 continue
 
-            barcoAtingido = verificar_acerto_tiro(matrizComputadorBack, matrizComputadorFront, linhaAtacar, colunaAtacar)
-            if barcoAtingido is not None:
-                qtdBarcosIa, vidaBarcosIa, afundou = pegar_qtd_barcos(vidaBarcosIa, barcoAtingido)
-                print("💥 Acertou!")
+            # verifica onde foi o tiro, e devolve o id pro barcoAtingido
+            barcoAtingido = verificar_acerto_tiro(matrizComputadorBack, matrizComputadorFront, linhaAtacar, colunaAtacar) 
+
+            if barcoAtingido != None:
+
+                acertou = True
+                qtdBarcosJ1, vidaBarcosJ1, afundou = pegar_qtd_barcos(vidaBarcosJ1,barcoAtingido)
+
                 if afundou:
-                    print("🚢 Você afundou um navio! Jogue novamente.")
-                    print_tabuleiro_jogo(qtdBarcosIa, qtdBarcosJ1)
-                    vitoria = checar_fim(qtdBarcosIa, qtdBarcosJ1)
-                    if vitoria != "nao":
+                    print_tabuleiro_jogo(qtdBarcosIa,qtdBarcosJ1)
+                    print("Você afundou um navio inimigo! Você pode atacar novamente! 💥")
+
+                    if checar_fim(qtdBarcosIa,qtdBarcosJ1) != "nao": # se alguem ganhou
+                        jogando = False
                         break
-                    continue
+
+                    continue # se afundou e ninguem ganhou
+                else:
+                    jogando = False
+
+            elif barcoAtingido == None:
+                acertou = False
+                jogando = False
+
+            print_tabuleiro_jogo(qtdBarcosIa,qtdBarcosJ1)
+
+            if acertou:
+                print(f"O(a) JOGADOR(a) ACERTOU o tiro! 💥 ")
             else:
-                print("🌀 Errou.")
-
-            jogando = False
-
-        if vitoria != "nao":
-            break
+                print(f"O(a) JOGADOR(a) ERROU o tiro! 🌀 ")
 
         input("Enter para continuar")
-
-        # VEZ DO COMPUTADOR
+        
         jogando = True
+        
+        #JOGADA IA
         while jogando:
+
+            # print_matriz_convertida(matrizJogadorBack,matrizJogadorFront,"jogando","jogador")
+
             linhaAtacar, colunaAtacar = input_computador_atacar()
-            if matrizJogadorBack[linhaAtacar][colunaAtacar] in [6, 7]:
-                continue  # tenta outro
 
-            barcoAtingido = verificar_acerto_tiro(matrizJogadorBack, matrizJogadorFront, linhaAtacar, colunaAtacar)
-            if barcoAtingido is not None:
-                qtdBarcosJ1, vidaBarcosJ1, afundou = pegar_qtd_barcos(vidaBarcosJ1, barcoAtingido)
-                print("💥 Computador acertou!")
+            if matrizJogadorBack[linhaAtacar][colunaAtacar] == 6 or matrizJogadorBack[linhaAtacar][colunaAtacar] == 7:
+                continue
+
+            barcoAtingido = verificar_acerto_tiro(matrizJogadorBack,matrizJogadorFront, linhaAtacar, colunaAtacar)
+
+            if barcoAtingido != None:
+
+                acertou = True
+                qtdBarcosJ1, vidaBarcosJ1, afundou = pegar_qtd_barcos(vidaBarcosJ1,barcoAtingido)
+
                 if afundou:
-                    print("🚢 O computador afundou um navio e vai atacar novamente!")
-                    print_tabuleiro_jogo(qtdBarcosIa, qtdBarcosJ1)
-                    vitoria = checar_fim(qtdBarcosIa, qtdBarcosJ1)
-                    if vitoria != "nao":
+                    print_tabuleiro_jogo(qtdBarcosIa,qtdBarcosJ1)
+                    print(f"O Computador AFUNDOU o navio e pode jogar novamente! 💥")
+
+                    if checar_fim(qtdBarcosIa,qtdBarcosJ1) != "nao": # se alguem ganhou
+                        jogando = False
                         break
+
                     continue
+                else:
+                    jogando = False
+
+            elif barcoAtingido == None:
+                acertou = False
+                jogando = False
+
+            print_tabuleiro_jogo(qtdBarcosIa,qtdBarcosJ1)
+
+            if acertou:
+                print(f"O computador ACERTOU o tiro! 💥 ")
             else:
-                print("🌀 Computador errou.")
+                print(f"O Computador errou o tiro! 🌀 ")
 
-            jogando = False
-
-        print_tabuleiro_jogo(qtdBarcosIa, qtdBarcosJ1)
-        vitoria = checar_fim(qtdBarcosIa, qtdBarcosJ1)
 
     if vitoria == "Jogador":
-        print("Parabéns!!! vc ganhou feito por luis felipe quintliano, davi cagnato, larissa adames")
+        print("Parabéns!!! vc ganhou feito por Luis Quintliano, Davi cagnato, Larissa Adames")
     elif vitoria == "Computador":
-        print("Não foi dessa vez amigo! feito por luis felipe quintliano, davi cagnato, larissa adames")
+        print("Não foi dessa vez amigo! feito por Luis Quintliano, Davi cagnato, Larissa Adames")
+
+matrizJogadorFront = criar_11x11_front()
+matrizJogadorBack = criar_matriz_back()
+matrizComputadorFront = criar_11x11_front()
+matrizComputadorBack = criar_matriz_back()
 
 inicio_jogo()
+
