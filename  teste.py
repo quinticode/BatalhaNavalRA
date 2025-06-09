@@ -35,3 +35,4 @@ def exibirTabuleiros(tabJogador, tabComputador, vidaBarcosJogador, vidaBarcosCom
     print("   " + "  ".join([str(i+1) for i in range(tabuleiro)]))#transforma indice em string
     for i, linha in enumerate(tabComputador):
         print(f"{chr(ord('A') + i)}  {'  '.join(linha)}") #lista compacta
+
