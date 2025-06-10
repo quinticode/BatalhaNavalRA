@@ -53,7 +53,7 @@ def print_matriz(matriz):
         print(matriz[i])
     print()
 
-def criar_11x11_front():
+def crir_matriz_front():
 
     return [
     ['-',' 1',' 2',' 3',' 4',' 5',' 6',' 7',' 8',' 9','10'],
@@ -113,6 +113,7 @@ def adicionar_barco_matriz(matriz,linha,coluna,tamanho,direcao):
                         matriz[linha][coluna+i] = id
 
                 else:
+                    print_matriz_convertida(matrizJogadorBack,matrizJogadorFront,"posicionando","Jogador")
                     print("O seu barco está saindo do tabuleiro ou colidindo com outro barco! Escolha uma posição válida!")
 
             elif direcao == "y":
@@ -130,21 +131,21 @@ def adicionar_barco_matriz(matriz,linha,coluna,tamanho,direcao):
 def criar_vidas_barcos():
     return [1,2,3,4,5]
 
-def pegar_qtd_barcos(vidaBarcos, barcoAtingido):
+def pegar_qtd_barcos(vidasBarcos, barcoAtingido):
     afundouBarco = False
     qtdBarcos = 0
+    indice = barcoAtingido - 1  # IDs vão de 1 a 5, lista vai de 0 a 4. (ele converte o id dos barcos para o indice da lista)
 
-    indice = barcoAtingido - 1  # IDs vão de 1 a 5, lista vai de 0 a 4
-    if 0 <= indice < len(vidaBarcos):
-        vidaBarcos[indice] -= 1
-        if vidaBarcos[indice] == 0:
+    if 0 <= indice < len(vidasBarcos): # se o indice for 0,1,2,3,4, ele acessa a lista e tira uma vida do barco correspondente
+        vidasBarcos[indice] -= 1
+        if vidasBarcos[indice] == 0:
             afundouBarco = True
 
-    for vida in vidaBarcos:
+    for vida in vidasBarcos:
         if vida > 0:
             qtdBarcos += 1
 
-    return qtdBarcos, vidaBarcos, afundouBarco
+    return qtdBarcos, vidasBarcos, afundouBarco
 
 
 
@@ -227,12 +228,15 @@ def posicionar_barco_jogador(barco,jogador):
 
     print(f"Agora você está posicionando o {barco}, ele possui TAMANHO {tamanho}\n")
 
-    print("Escolha o eixo/orientação para posicionar o barco:\n")
-    print("[HORIZONTAL] ou [x] | [VERTICAL] ou [y]\n") # congratulacoes ao davi (☞ﾟヮﾟ)☞
+    if tamanho != 1: # só entra aqui se o tamnho do barco NAO for 1, nao tem o pq escolher orientacao de barco tamanho 1
+        print("Escolha o eixo/orientação para posicionar o barco:\n")
+        print("[HORIZONTAL] ou [x] | [VERTICAL] ou [y]\n") # congratulacoes ao davi (☞ﾟヮﾟ)☞
 
-    while eixo == -1:
-        eixo = input("Escolha o eixo/orientação: ").lower()
-        eixo = converter_eixo(eixo)
+        while eixo == -1:
+            eixo = input("Escolha o eixo/orientação: ").lower()
+            eixo = converter_eixo(eixo)
+    else:
+        eixo = "x" # o eixo tem q ser alguma coisa se nao fica preso no loop de -1
 
     print_matriz(matrizFront)
 
@@ -355,8 +359,8 @@ def checar_fim(qtdBarcosIa,qtdBarcosJ1):
         return "jogador" # jogador ganhou
     elif qtdBarcosJ1 == 0:
         return "computador" # computador ganhou
-    
-    return "ninguem" # ninguem ganhou
+    else:
+        return "ninguem" # ninguem ganhou
 
 def inicio_jogo():
 
@@ -364,8 +368,8 @@ def inicio_jogo():
 
     qtdBarcosJ1 = 5
     qtdBarcosIa = 5
-    vidaBarcosJ1 = criar_vidas_barcos()
-    vidaBarcosIa = criar_vidas_barcos()
+    vidasBarcosJ1 = criar_vidas_barcos()
+    vidasBarcosIa = criar_vidas_barcos()
     vitoria = "ninguem"
 
     print_matriz_convertida(matrizComputadorBack,matrizComputadorFront,"jogando", "computador")
@@ -393,7 +397,7 @@ def inicio_jogo():
                 
                 acertou = True
                 # ele muda a vida e qtd de barcos do inimigo, por isso aqui é Ia
-                qtdBarcosIa, vidaBarcosIa, afundou = pegar_qtd_barcos(vidaBarcosIa,barcoAtingido)
+                qtdBarcosIa, vidasBarcosIa, afundou = pegar_qtd_barcos(vidasBarcosIa,barcoAtingido)
 
                 if afundou:
                     print_tabuleiro_jogo(qtdBarcosIa,qtdBarcosJ1)
@@ -439,7 +443,7 @@ def inicio_jogo():
             if barcoAtingido != None:
 
                 acertou = True
-                qtdBarcosJ1, vidaBarcosJ1, afundou = pegar_qtd_barcos(vidaBarcosJ1,barcoAtingido)
+                qtdBarcosJ1, vidasBarcosJ1, afundou = pegar_qtd_barcos(vidasBarcosJ1,barcoAtingido)
 
                 if afundou:
                     print_tabuleiro_jogo(qtdBarcosIa,qtdBarcosJ1)
@@ -473,11 +477,11 @@ def inicio_jogo():
         print("Não foi dessa vez amigo, você perdeu!\n Muito obrigado por jogar!\n Feito por Luis Quintliano, Davi cagnato, Larissa Adames")
 
 def menu():
-    print("- - Bem-vindo ao Batalha Naval! - -\n")
+    print("=-=-= Bem-vindo ao Batalha Naval! =-=-=\n")
     print("- Batalha naval é um jogo de tabuleiro de dois jogadores, no qual os jogadores têm de adivinhar em que quadrados estão os navios do oponente.")
     print("- Seu objetivo é derrubar os barcos do oponente adversário, ganha quem derrubar todos os navios adversários primeiro.")
     time.sleep(.8)
-    print("\n- Você jogará contra o computador! Boa sorte!")
+    print("\n=-=-= Você jogará contra o computador! Boa sorte! =-=-=")
 
     input("\nEnter para continuar")
 
@@ -490,11 +494,9 @@ def menu():
     inicio_jogo()
 
     
-
-
-matrizJogadorFront = criar_11x11_front()
+matrizJogadorFront = crir_matriz_front()
 matrizJogadorBack = criar_matriz_back()
-matrizComputadorFront = criar_11x11_front()
+matrizComputadorFront = crir_matriz_front()
 matrizComputadorBack = criar_matriz_back()
 
 menu()
