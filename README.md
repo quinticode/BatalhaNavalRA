@@ -7,4 +7,4 @@ RA 2, Batalha Naval
 O "batalha-naval-extra.py" é apenas para exposição com os colegas na sala.
 
 Sabemos que não deve ser feito assim, porém a jogatina está sendo demonstrada no arquivo chamado "batalha-naval-jogatina.gif"
-
+[gif](https://github.com/quinticode/BatalhaNavalRA/blob/main/batalha-naval-jogatina.gif)
