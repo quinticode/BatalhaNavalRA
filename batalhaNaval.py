@@ -381,13 +381,13 @@ def inicio_jogo():
     vidasBarcosIa = [1,2,3,4,5]
     vitoria = "ninguem"
 
-    print_matriz_convertida(matrizComputadorBack,matrizComputadorFront,"jogando", computador)
-    print_matriz(matrizComputadorBack) # se quiser testar tira o comentario
-    print_matriz_convertida(matrizJogadorBack,matrizJogadorFront,"jogando", humano)
-    print_matriz(matrizJogadorBack)
+    # print_matriz_convertida(matrizComputadorBack,matrizComputadorFront,"jogando", computador)
+    # print_matriz(matrizComputadorBack) # se quiser testar tira o comentario
+    # print_matriz_convertida(matrizJogadorBack,matrizJogadorFront,"jogando", humano)
+    # print_matriz(matrizJogadorBack)
 
     # SE QUISER TESTAR TIRA O COMENTARIO DE CIMA, E DEIXA EM BAIXO COMO COMENTARIO
-    # print_tabuleiro_jogo(qtdBarcosIa,qtdBarcosJ1)
+    print_tabuleiro_jogo(qtdBarcosIa,qtdBarcosJ1)
 
     while vitoria == "ninguem":
 
